@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
+import "./Writer.module.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Writers = () => {
     const [data, setData] = useState([]);
     const [error, setError] = useState("");
     const [isAccordionOpen, setIsAccordionOpen] = useState(false);
     const [isOuterAccordionOpen, setIsOuterAccordionOpen] = useState(false);
+    const [isUpdateAccordionOpen, setIsUpdateAccordionOpen] = useState(false);
     const [newWriter, setNewWriter] = useState({
+        writerId: "",
+        writerName: "",
+        writerSurname: "",
+    });
+    const [updateWriter, setUpdateWriter] = useState({
         writerId: "",
         writerName: "",
         writerSurname: "",
@@ -15,6 +24,8 @@ const Writers = () => {
     const [writerId, setWriterId] = useState("");
     const [writerData, setWriterData] = useState(null);
     const [isIdAccordionOpen, setIsIdAccordionOpen] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
+    const [showUpdatePopup, setShowUpdatePopup] = useState(false);
 
     // API'den yazarları al
     const fetchData = async () => {
@@ -40,43 +51,57 @@ const Writers = () => {
                 body: JSON.stringify(newWriter),
             });
 
-            if (!response.ok) throw new Error("Yazar eklenemedi: " + response.statusText);
+            if (!response.ok) {
+                toast.error("Yazar eklenemedi!");
+                throw new Error("Yazar eklenemedi");
+            }
 
+            toast.success("Yazar başarıyla eklendi!");
             fetchData();
+            setNewWriter({
+                writerId: "",
+                writerName: "",
+                writerSurname: "",
+            });
+            setShowPopup(false);
         } catch (err) {
             setError(err.message);
+            toast.error(err.message);
         }
     };
 
     // Yazar güncelleme
-    const updateWriter = async (id) => {
-        if (!id) {
-            console.error("Güncelleme işlemi için geçersiz ID:", id);
+    const handleUpdateWriter = async () => {
+        if (!updateWriter.writerId) {
+            toast.error("Yazar ID gerekli!");
             return;
         }
 
-        const updatedWriter = {
-            writerId: id, // ID'yi nesneye ekliyoruz
-            writerName: newWriter.writerName,
-            writerSurname: newWriter.writerSurname,
-        };
-
         try {
-            const response = await fetch(`https://localhost:44359/api/Writer/${id}`, {
+            const response = await fetch(`https://localhost:44359/api/Writer/${updateWriter.writerId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedWriter),
+                body: JSON.stringify(updateWriter),
             });
+
             if (!response.ok) {
-                const errorData = await response.json();
-                console.error("Güncelleme hatası:", errorData);
-                throw new Error("Yazar güncellenemedi: " + response.statusText);
+                toast.error("Yazar güncellenemedi!");
+                throw new Error("Yazar güncellenemedi");
             }
+
+            toast.success("Yazar başarıyla güncellendi!");
             fetchData();
+            setShowUpdatePopup(false);
+            setUpdateWriter({
+                writerId: "",
+                writerName: "",
+                writerSurname: "",
+            });
         } catch (err) {
             setError(err.message);
+            toast.error(err.message);
         }
-    };
+    }
     // Yazar silme
     const deleteWriter = async (id) => {
         if (!id) {
@@ -89,10 +114,10 @@ const Writers = () => {
                 method: "DELETE",
             });
             if (!response.ok) {
-                const errorData = await response.json();
-                console.error("Silme hatası:", errorData);
+                toast.error("Yazar silinemedi!");
                 throw new Error("Yazar silinemedi: " + response.statusText);
             }
+            toast.success("Yazar başarıyla silindi!");
             fetchData();
         } catch (err) {
             setError(err.message);
@@ -117,45 +142,100 @@ const Writers = () => {
         fetchData();
     }, []);
 
+    // Yeni Yazar Ekleme Popup bileşeni
+    const AddWriterPopup = () => {
+        if (!showPopup) return null;
+
+        return (
+            <div className="popup-overlay" onClick={(e) => {
+                if (e.target.className === 'popup-overlay') {
+                    setShowPopup(false);
+                }
+            }}>
+                <div className="popup-content">
+                    <h2>Yeni Yazar Ekle</h2>
+                    <input
+                        type="text"
+                        placeholder="Yazar Adı"
+                        value={newWriter.writerName}
+                        onChange={(e) => setNewWriter({ ...newWriter, writerName: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Yazar Soyadı"
+                        value={newWriter.writerSurname}
+                        onChange={(e) => setNewWriter({ ...newWriter, writerSurname: e.target.value })}
+                    />
+                    <div className="popup-buttons">
+                        <button className="button-28" onClick={addWriter}>Ekle</button>
+                        <button className="button-28" onClick={() => setShowPopup(false)}>İptal</button>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    // Yazar Güncelleme Popup bileşeni
+    const UpdateWriterPopup = () => {
+        if (!showUpdatePopup) return null;
+
+        return (
+            <div className="popup-overlay" onClick={(e) => {
+                if (e.target.className === 'popup-overlay') {
+                    setShowUpdatePopup(false);
+                }
+            }}>
+                <div className="popup-content">
+                    <h2>Yazar Güncelle</h2>
+                    <input
+                        type="number"
+                        placeholder="Yazar ID"
+                        value={updateWriter.writerId}
+                        onChange={(e) => setUpdateWriter({ ...updateWriter, writerId: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Yazar Adı"
+                        value={updateWriter.writerName}
+                        onChange={(e) => setUpdateWriter({ ...updateWriter, writerName: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Yazar Soyadı"
+                        value={updateWriter.writerSurname}
+                        onChange={(e) => setUpdateWriter({ ...updateWriter, writerSurname: e.target.value })}
+                    />
+                    <div className="popup-buttons">
+                        <button className="button-28" onClick={handleUpdateWriter}>Güncelle</button>
+                        <button className="button-28" onClick={() => setShowUpdatePopup(false)}>İptal</button>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     if (error) {
         return <div>Hata: {error}</div>;
     }
 
     return (
         <div>
-
-
-            {/* Dış Accordion */}
             <div>
-                <button2 onClick={() => setIsOuterAccordionOpen(!isOuterAccordionOpen)}>
+                <wbutton2 onClick={() => setIsOuterAccordionOpen(!isOuterAccordionOpen)}>
                     {isOuterAccordionOpen ? "Yazarları Gizle" : "Yazarlar"}
-                </button2>
+                </wbutton2>
                 {isOuterAccordionOpen && (
                     <div>
-                        {/* Yeni Yazar Ekleme Formu */}
                         <div>
-                            <h2>Yeni Yazar Ekle</h2>
-                            <input
-                                type="text"
-                                placeholder="Yazar Adı"
-                                value={newWriter.writerName}
-                                onChange={(e) => setNewWriter({ ...newWriter, writerName: e.target.value })}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Yazar Soyadı"
-                                value={newWriter.writerSurname}
-                                onChange={(e) => setNewWriter({ ...newWriter, writerSurname: e.target.value })}
-                            />
-                            <button onClick={addWriter}>Ekle</button>
-                            <h6 className="desc">Yazar güncellemek için bilgileri doldurduktan sonra güncellemek istediğiniz yazarın yanında ki güncelle butonuna basınız.</h6>
+                            <button className="button-28" onClick={() => setShowPopup(true)}>
+                                Yeni Yazar Ekle
+                            </button>
                         </div>
 
-                        {/* ID ile Yazar Getirme Accordion */}
                         <div>
-                            <button2 onClick={() => setIsIdAccordionOpen(!isIdAccordionOpen)}>
+                            <wbutton2 onClick={() => setIsIdAccordionOpen(!isIdAccordionOpen)}>
                                 {isIdAccordionOpen ? "ID ile Yazarı Gizle" : "ID ile Yazar Getir"}
-                            </button2>
+                            </wbutton2>
                             {isIdAccordionOpen && (
                                 <div>
                                     <h2>ID ile Yazar Getir</h2>
@@ -165,7 +245,10 @@ const Writers = () => {
                                         value={writerId}
                                         onChange={(e) => setWriterId(e.target.value)}
                                     />
-                                    <button onClick={fetchWriterById}>Getir</button>
+                                    <button className="button-28" role="button" onClick={fetchWriterById}>
+                                        Getir
+                                    </button>
+
                                     {writerData && (
                                         <div>
                                             <h3>Yazar Bilgileri</h3>
@@ -178,11 +261,23 @@ const Writers = () => {
                             )}
                         </div>
 
-                        {/* İç Accordion */}
                         <div>
-                            <button2 onClick={() => setIsAccordionOpen(!isAccordionOpen)}>
+                            <wbutton2 onClick={() => setIsUpdateAccordionOpen(!isUpdateAccordionOpen)}>
+                                {isUpdateAccordionOpen ? "Yazar Güncellemeyi Gizle" : "Yazar Güncelle"}
+                            </wbutton2>
+                            {isUpdateAccordionOpen && (
+                                <div>
+                                    <button className="button-28" onClick={() => setShowUpdatePopup(true)}>
+                                        Yazar Güncelle
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+
+                        <div>
+                            <wbutton2 onClick={() => setIsAccordionOpen(!isAccordionOpen)}>
                                 {isAccordionOpen ? "Yazarları Gizle" : "Yazarları Göster"}
-                            </button2>
+                            </wbutton2>
                             {isAccordionOpen && (
                                 <div className="box-container">
                                     {data.length > 0 ? (
@@ -192,12 +287,9 @@ const Writers = () => {
                                                 <strong>Yazar Adı:</strong> {writer.writerName} <br />
                                                 <strong>Yazar Soyadı:</strong> {writer.writerSurname} <br />
                                                 <div className="button-container">
-                                                    <button3 onClick={() => updateWriter(writer.writerId)}>
-                                                        Güncelle
-                                                    </button3>
-                                                    <button3 onClick={() => deleteWriter(writer.writerId)}>
+                                                    <button className="button-28" role="button" onClick={() => deleteWriter(writer.writerId)}>
                                                         Sil
-                                                    </button3>
+                                                    </button>
                                                 </div>
                                             </div>
                                         ))
@@ -210,6 +302,9 @@ const Writers = () => {
                     </div>
                 )}
             </div>
+            <AddWriterPopup />
+            <UpdateWriterPopup />
+            <ToastContainer />
         </div>
     );
 };

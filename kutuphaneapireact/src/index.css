@@ -58,7 +58,7 @@ button {
 }
 
 button:hover {
-  border-color: #646cff;
+  border-color: #000000;
 }
 
 button:focus,
@@ -67,7 +67,7 @@ button:focus-visible {
 }
 
 button2 {
-  --color: #000000;
+  --color: #3e86e4;
   font-family: inherit;
   display: inline-block;
   width: 1120px;
@@ -110,7 +110,7 @@ button2:hover:before {
 }
 
 button2:active:before {
-  background: #000000;
+  background: #3e86e4;
   transition: background 0s;
 }
 
@@ -149,6 +149,8 @@ button3 {
   margin-left: 20px;
   /* Soldan boşluk */
 }
+
+
 
 .box {
   border-radius: 10px;
@@ -205,6 +207,13 @@ li {
   align-items: center;
 }
 
+.separator {
+  border-top: 2px solid #000;
+
+  margin: 10px 0;
+
+}
+
 .modal-content {
   background-color: white;
   padding: 20px;
@@ -221,10 +230,87 @@ li {
   }
 
   a:hover {
-    color: #747bff;
+    color: #000000;
   }
 
   button {
     background-color: #f9f9f9;
+
   }
+
+  .button-28 {
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid #1A1A1A;
+    border-radius: 8px;
+    box-sizing: border-box;
+    color: #3B3B3B;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0;
+    min-height: 40px;
+    /* Yükseklik azaltıldı */
+    outline: none;
+    padding: 8px 16px;
+    /* İç boşluk azaltıldı */
+    text-align: center;
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    will-change: transform;
+  }
+
+  .button-28:disabled {
+    pointer-events: none;
+  }
+
+  .button-28:hover {
+    color: #fff;
+    background-color: #1A1A1A;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    transform: translateY(-2px);
+  }
+
+  .button-28:active {
+    box-shadow: none;
+    transform: translateY(0);
+  }
+
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .popup-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+  }
+
 }

@@ -1,0 +1,316 @@
+/* Genel Ayarlar */
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.desc {
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    text-align: center;
+
+}
+
+a {
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
+}
+
+a:hover {
+    color: #535bf2;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+}
+
+/* Buton Ayarları */
+button {
+    border-radius: 8px;
+    border: 1px solid black;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+button:hover {
+    border-color: #000000;
+}
+
+button:focus,
+button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+}
+
+bbutton2 {
+    --color: #3e86e4;
+    font-family: inherit;
+    display: inline-block;
+    width: 1120px;
+    height: 50px;
+    line-height: 50px;
+    margin: 20px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border: 2px solid var(--color);
+    transition: color 0.5s;
+    z-index: 1;
+    font-size: 17px;
+    border-radius: 6px;
+    font-weight: 500;
+    color: var(--color);
+    text-align: center;
+}
+
+bbutton2:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    background: var(--color);
+    height: 300%;
+    width: 300%;
+    top: 100%;
+    left: 100%;
+    border-radius: 50%;
+    transition: all 0.7s;
+}
+
+bbutton2:hover {
+    color: #fff;
+}
+
+bbutton2:hover:before {
+    top: -100%;
+    left: -100%;
+}
+
+bbutton2:active:before {
+    background: #3e86e4;
+    transition: background 0s;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    margin-left: 220px;
+    margin-top: -80px;
+}
+
+button3 {
+    border-radius: 8px;
+    border: 1px solid black;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+/* Kutuların Yerleşimi */
+.box-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 sütun */
+    gap: 40px;
+    /* Kutular arasındaki boşluk */
+
+    /* Kutuları ortala */
+    margin-top: 20px;
+    /* Yukarıdan boşluk */
+    margin-left: 20px;
+    /* Soldan boşluk */
+}
+
+
+
+.box {
+    border-radius: 10px;
+    width: 200px;
+    height: 165px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
+        rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+}
+
+.box2 {
+    border-radius: 10px;
+    margin-top: 1rem;
+    width: 120px;
+    height: 65px;
+    padding: 10px;
+    justify-content: center;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
+}
+
+.panel ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.panel ul li {
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.separator {
+    border-top: 2px solid #000;
+
+    margin: 10px 0;
+
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    text-align: center;
+}
+
+
+@media (prefers-color-scheme: light) {
+    :root {
+        color: #213547;
+        background-color: #ffffff;
+    }
+
+    a:hover {
+        color: #000000;
+    }
+
+    button {
+        background-color: #f9f9f9;
+
+    }
+
+    .button-28 {
+        appearance: none;
+        background-color: transparent;
+        border: 2px solid #1A1A1A;
+        border-radius: 8px;
+        box-sizing: border-box;
+        color: #3B3B3B;
+        cursor: pointer;
+        display: inline-block;
+        font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-size: 16px;
+        font-weight: 600;
+        line-height: normal;
+        margin: 0;
+        min-height: 40px;
+        /* Yükseklik azaltıldı */
+        outline: none;
+        padding: 8px 16px;
+        /* İç boşluk azaltıldı */
+        text-align: center;
+        text-decoration: none;
+        transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        will-change: transform;
+    }
+
+    .button-28:disabled {
+        pointer-events: none;
+    }
+
+    .button-28:hover {
+        color: #fff;
+        background-color: #1A1A1A;
+        box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+        transform: translateY(-2px);
+    }
+
+    .button-28:active {
+        box-shadow: none;
+        transform: translateY(0);
+    }
+
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .popup-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .popup-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+}
